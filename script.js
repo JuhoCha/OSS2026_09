@@ -40,11 +40,8 @@ window.addEventListener("load", function () {
             const tddeleteBtn = document.createElement("button");
             tddeleteBtn.textContent = "삭제";
             tddeleteBtn.addEventListener("click", function () {
-                if (confirm("완료하셨습니까?")) {
-                    todos = todos.filter(function (t) {//filter는 남길거 고르기
-                        return t.id !== todo.id;
-                    });
-                    render();
+                if (confirm("삭제하시겠습니까?")) {//서버에 삭제 요청
+                    deleteTodo(todo.id);
                 }
             });
 
@@ -117,6 +114,21 @@ window.addEventListener("load", function () {
             });
             if (!res.ok) {
                 alert("수정 실패!");
+                return;
+            }
+            loadTodos();
+        } catch (e) {
+            alert("서버 연결 오류");
+        }
+    }
+
+    async function deleteTodo(id) { // 서버의 todo 삭제
+        try {
+            const res = await fetch(API_URL + "/" + id, {
+                method: "DELETE"
+            });
+            if (!res.ok) {
+                alert("삭제 실패!");
                 return;
             }
             loadTodos();
