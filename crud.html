@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        let todos = [
+            {
+                id: 1,
+                title: "OSS 과제",
+                subject: "오픈소스스튜디오",
+                task: "CRUD 만들기",
+                deadline: "2026-10-04",
+                priority: 1
+            },
+            {
+                id: 2,
+                title: "Cal2 과제",
+                subject: "Calculus2",
+                task: "문제풀기",
+                deadline: "2026-10-06",
+                priority: 2
+            },
+            {
+                id: 3,
+                title: "Line Editor 만들기",
+                subject: "시스템프로그래밍",
+                task: "코딩",
+                deadline: "2026-10-06",
+                priority: 3
+            },
+            {
+                id: 4,
+                title: "General Outline",
+                subject: "ERC",
+                task: "Essay 작성",
+                deadline: "2026-10-08",
+                priority: 4
+            }
+        ]
+
+        window.addEventListener("load", function () {
+            const titleInput = document.querySelector('#title');
+            const subjectInput = document.querySelector('#subject');
+            const taskInput = document.querySelector('#task');
+            const deadlineInput = document.querySelector('#deadline');
+            const priorityInput = document.querySelector('#priority');
+            const todoBtn = document.querySelector('#todoBtn');
+            const todoList = document.querySelector('#todoList');
+
+            let idCounter = 5;
+            let editId = null;
+
+            function render() {
+                todoList.innerHTML = "";
+                todos.forEach(function (todo) {
+                    const tr = document.createElement('tr');
+
+                    const tdId = document.createElement('td');
+                    tdId.textContent = todo.id;
+
+                    const tdTitle = document.createElement('td');
+                    tdTitle.textContent = todo.title;
+
+                    const tdSubject = document.createElement('td');
+                    tdSubject.textContent = todo.subject;
+
+                    const tdTask = document.createElement('td');
+                    tdTask.textContent = todo.task;
+
+                    const tdDeadline = document.createElement('td');
+                    tdDeadline.textContent = todo.deadline;
+
+                    const tdPriority = document.createElement('td');
+                    tdPriority.textContent = todo.priority;
+
+                    const tdComplete = document.createElement('td');
+                    tdComplete.innerHTML = '<input type="checkbox">';
+                    const tddeleteBtn = document.createElement("button");
+                    tddeleteBtn.textContent = "삭제";
+                    tddeleteBtn.addEventListener("click", function () {
+                        if (confirm("완료하셨습니까?")) {
+                            todos = todos.filter(function (t) {//filter는 남길거 고르기
+                                return t.id !== todo.id;
+                            });
+                            render();
+                        }
+                    });
+
+                    const editBtn = document.createElement("button");
+                    editBtn.textContent = "수정";
+
+                    editBtn.addEventListener("click", function () {
+                        titleInput.value = todo.title;
+                        subjectInput.value = todo.subject;
+                        taskInput.value = todo.task;
+                        deadlineInput.value = todo.deadline;
+                        priorityInput.value = todo.priority;
+
+                        editId = todo.id;
+                        todoBtn.textContent = "저장";
+                    });
+
+
+                    tr.appendChild(tdId);
+                    tr.appendChild(tdTitle);
+                    tr.appendChild(tdSubject);
+                    tr.appendChild(tdTask);
+                    tr.appendChild(tdDeadline);
+                    tr.appendChild(tdPriority);
+                    tr.appendChild(tdComplete);
+                    tdComplete.appendChild(tddeleteBtn);
+                    tdComplete.appendChild(editBtn);
+
+                    todoList.appendChild(tr);
+                });
+            } render();
+
+            todoBtn.addEventListener("click", function () {
+                if (!titleInput.checkValidity()) {
+                    alert("제목을 5자 이상 입력해주세요!");
+                    titleInput.focus();
+                    return;
+                }
+                if (!subjectInput.checkValidity()) {
+                    alert("과목명을 입력하세요.");
+                    subjectInput.focus();
+                    return;
+                }
+                if (!taskInput.checkValidity()) {
+                    alert("할일을 입력하세요.");
+                    taskInput.focus();
+                    return;
+                }
+                if (!deadlineInput.checkValidity()) {
+                    alert("기한을 입력하세요.");
+                    deadlineInput.focus();
+                    return;
+                }
+                if (!priorityInput.checkValidity()) {
+                    alert("우선순위를 범위에 맞게 입력하세요.(1-20)");
+                    priorityInput.focus();
+                    return;
+                }
+                //여기까지 상단 입력부분
+
+                if (editId === null) {
+                    const newTodo = {
+                        id: idCounter,
+                        title: titleInput.value,
+                        subject: subjectInput.value,
+                        task: taskInput.value,
+                        deadline: deadlineInput.value,
+                        priority: Number(priorityInput.value)
+                    };
+                    idCounter++;
+                    todos.push(newTodo);
+                } else {
+                    const target = todos.find(function (t) {
+                        return t.id === editId;
+                    });
+                    target.title = titleInput.value;
+                    target.subject = subjectInput.value;
+                    target.task = taskInput.value;
+                    target.deadline = deadlineInput.value;
+                    target.priority = Number(priorityInput.value);
+                    editId = null;
+                    todoBtn.textContent = "일정 등록";
+                }
+                render();
+
+
+                titleInput.value = "";
+                subjectInput.value = "";
+                taskInput.value = "";
+                deadlineInput.value = "";
+                priorityInput.value = "";
+                titleInput.focus();
+            })
+        })
+    </script>
+    <style>
+        body {
+            background-color: lightyellow;
+        }
+
+        .header {
+            text-align: center;
+            border: 1px;
+            color: #000;
+            background-color: #a59cf2;
+            border-radius: 10px;
+        }
+
+        .todo-list {
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 1px solid;
+            color: #000;
+            background-color: #a59cf2;
+        }
+
+        .todo-table {
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid;
+            color: #000;
+            background-color: #f2d09c;
+        }
+
+        button {
+            border-radius: 5px;
+            background-color: #a1eaea;
+        }
+
+        button:hover {
+            background-color: #ff6b6b;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>TODO LIST</h1>
+    </div>
+    <div class="todo-list">
+        TODO LIST<br>
+        제목 : <input type="text" id="title" placeholder="제목" minlength="5" required> <br>
+        과목 : <input type="text" id="subject" placeholder="과목" required> <br>
+        할일 : <input type="text" id="task" placeholder="할일" required> <br>
+        기한 : <input type="date" id="deadline" placeholder="기한" required> <br>
+        우선순위 : <input type="number" id="priority" placeholder="우선순위" min="1" max="20" required> <br>
+        <button id="todoBtn">일정 등록</button>
+    </div><br>
+
+    <div class="todo-table">
+        <h3>TODO LIST</h3>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>제목</th>
+                    <th>과목</th>
+                    <th>할일</th>
+                    <th>기한</th>
+                    <th>우선순위</th>
+                    <th>완료</th>
+                </tr>
+            </thead>
+            <tbody id="todoList">
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        <p>22400719 Juho Cha &copy; OSSCLASS.</p>
+    </footer>
+</body>
+
+</html>
