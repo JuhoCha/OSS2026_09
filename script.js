@@ -108,6 +108,23 @@ window.addEventListener("load", function () {
         }
     }
 
+    async function updateTodo(id, data) { // 서버의 todo 수정
+        try {
+            const res = await fetch(API_URL + "/" + id, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+            if (!res.ok) {
+                alert("수정 실패!");
+                return;
+            }
+            loadTodos();
+        } catch (e) {
+            alert("서버 연결 오류");
+        }
+    }
+
     todoBtn.addEventListener("click", function () {
         if (!titleInput.checkValidity()) {
             alert("제목을 5자 이상 입력해주세요!");
@@ -145,15 +162,15 @@ window.addEventListener("load", function () {
                 priority: Number(priorityInput.value)
             };
             addTodo(newTodo);
-        } else { 
-            const target = todos.find(function (t) {
-                return t.id === editId;
-            });
-            target.title = titleInput.value;
-            target.subject = subjectInput.value;
-            target.task = taskInput.value;
-            target.deadline = deadlineInput.value;
-            target.priority = Number(priorityInput.value);
+        } else {
+            const data = {
+                title: titleInput.value,
+                subject: subjectInput.value,
+                task: taskInput.value,
+                deadline: deadlineInput.value,
+                priority: Number(priorityInput.value)
+            };
+            updateTodo(editId, data);
             editId = null;
             todoBtn.textContent = "일정 등록";
         }
