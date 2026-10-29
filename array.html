@@ -18,7 +18,8 @@
         const students = [
             {id: 1, name: "Kim", score: 85},
             {id: 2, name: "Lee", score: 92},
-            {id: 3, name: "Park", Score: 78}
+            {id: 3, name: "Park", score: 78},
+            {id: 4, name: "Chli", score: 92}
         ];
 
         /* Foreach 사용 
@@ -34,6 +35,20 @@
             return student.name;
         });
         console.log(names);
+
+        const student = students.find(function(student){
+            return student.name ==="Lee";
+        });console.log(student);
+
+        const result = students.filter(function(student){
+            return student.score >= 90;
+        });console.log(result); //90점 이상을 걸러냄 
+
+        /* 선택된 데이터 삭제 시킴
+        const result = students.filter(function(student){
+            return student.id !==2;
+        });
+        */
     </script>
 </head>
 <body>
