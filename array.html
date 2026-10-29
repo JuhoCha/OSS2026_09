@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        const scores = [10, 20, 30];
+
+        scores.forEach(scores => {
+            console.log(score);
+        });
+
+        const updated = scores.map(score => score +5);
+
+        console.log(updated);
+
+        const students = [
+            {id: 1, name: "Kim", score: 85},
+            {id: 2, name: "Lee", score: 92},
+            {id: 3, name: "Park", Score: 78}
+        ];
+
+        /* Foreach 사용 
+        const names[];
+        
+        students.forEach(function(student){
+            names.push(student.name);
+        });
+        console.log(name);
+        */
+
+        const names = students.map(function(studnet){
+            return student.name;
+        });
+        console.log(names);
+    </script>
+</head>
+<body>
+
+</body>
+</html>
