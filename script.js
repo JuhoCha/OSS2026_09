@@ -10,7 +10,6 @@ window.addEventListener("load", function () {
     const todoBtn = document.querySelector('#todoBtn');
     const todoList = document.querySelector('#todoList');
 
-    let idCounter = 5;
     let editId = null;
 
     function render() {
@@ -78,19 +77,36 @@ window.addEventListener("load", function () {
         });
     }
 
-    async function loadTodos() {
+    async function loadTodos() { //sync해주는데 
         try {
             const response = await fetch(API_URL);
             if (!response.ok) {
                 throw new Error("목록을 불러오지 못했습니다.");
             }
-            todos = await response.json();
+            todos = await response.json(); //json으로
             render();
         } catch (error) {
             alert(error.message);
         }
     }
     loadTodos();
+
+    async function addTodo(newTodo) {//서버에 todo추가
+        try {
+            const res = await fetch(API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newTodo)
+            });
+            if (!res.ok) {
+                alert("등록 실패!");
+                return;
+            }
+            loadTodos(); // 목록 다시 불러오기
+        } catch (e) {
+            alert("서버 연결 오류");
+        }
+    }
 
     todoBtn.addEventListener("click", function () {
         if (!titleInput.checkValidity()) {
@@ -122,16 +138,14 @@ window.addEventListener("load", function () {
 
         if (editId === null) {
             const newTodo = {
-                id: idCounter,
                 title: titleInput.value,
                 subject: subjectInput.value,
                 task: taskInput.value,
                 deadline: deadlineInput.value,
                 priority: Number(priorityInput.value)
             };
-            idCounter++;
-            todos.push(newTodo);
-        } else {
+            addTodo(newTodo);
+        } else { 
             const target = todos.find(function (t) {
                 return t.id === editId;
             });

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        const student = {
+            name: "Alice",
+            age: 20
+        };
+
+        const jsonText = JSON.stringify(student); //JS 값을 Json문자열로 변환
+        const restored = JSON.pares(jsonText); //Json 문자열을 JS 값으로 변환
+        console.log(restored.name); //local Storage의 객체 데이터 저장 
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
