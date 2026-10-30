@@ -9,12 +9,13 @@ window.addEventListener("load", function () {
     const priorityInput = document.querySelector('#priority');
     const todoBtn = document.querySelector('#todoBtn');
     const todoList = document.querySelector('#todoList');
+    const search = document.querySelector('#search');
 
     let editId = null;
 
-    function render() {
+    function render(list) {
         todoList.innerHTML = "";
-        todos.forEach(function (todo) {
+        list.forEach(function (todo) {
             const tr = document.createElement('tr');
 
             const tdId = document.createElement('td');
@@ -77,11 +78,11 @@ window.addEventListener("load", function () {
     async function loadTodos() { //sync해주는데 
         try {
             const response = await fetch(API_URL);
-            if (!response.ok) {
+            if (!response.ok) {//응답 없으면 
                 throw new Error("목록을 불러오지 못했습니다.");
             }
             todos = await response.json(); //json으로
-            render();
+            render(todos);
         } catch (error) {
             alert(error.message);
         }
@@ -90,52 +91,60 @@ window.addEventListener("load", function () {
 
     async function addTodo(newTodo) {//서버에 todo추가
         try {
-            const res = await fetch(API_URL, {
+            const response = await fetch(API_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(newTodo)
             });
-            if (!res.ok) {
+            if (!response.ok) {
                 alert("등록 실패!");
                 return;
             }
             loadTodos(); // 목록 다시 불러오기
-        } catch (e) {
+        } catch (error) {
             alert("서버 연결 오류");
         }
     }
 
     async function updateTodo(id, data) { // 서버의 todo 수정
         try {
-            const res = await fetch(API_URL + "/" + id, {
+            const response = await fetch(API_URL + "/" + id, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
             });
-            if (!res.ok) {
+            if (!response.ok) {
                 alert("수정 실패!");
                 return;
             }
             loadTodos();
-        } catch (e) {
+        } catch (error) {
             alert("서버 연결 오류");
         }
     }
 
     async function deleteTodo(id) { // 서버의 todo 삭제
         try {
-            const res = await fetch(API_URL + "/" + id, {
+            const response = await fetch(API_URL + "/" + id, {
                 method: "DELETE"
             });
-            if (!res.ok) {
+            if (!response.ok) {
                 alert("삭제 실패!");
                 return;
             }
             loadTodos();
-        } catch (e) {
+        } catch (error) {
             alert("서버 연결 오류");
         }
     }
+
+    search.addEventListener("input", function () { // 제목으로 검색
+        const keyword = search.value;
+        const result = todos.filter(function (t) {
+            return t.title.includes(keyword);
+        });
+        render(result);
+    });
 
     todoBtn.addEventListener("click", function () {
         if (!titleInput.checkValidity()) {
@@ -186,8 +195,6 @@ window.addEventListener("load", function () {
             editId = null;
             todoBtn.textContent = "일정 등록";
         }
-        render();
-
 
         titleInput.value = "";
         subjectInput.value = "";
