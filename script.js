@@ -100,7 +100,7 @@ window.addEventListener("load", function () {
                 alert("등록 실패!");
                 return;
             }
-            loadTodos(); // 목록 다시 불러오기
+            await loadTodos(); // 목록 다시 불러오기
         } catch (error) {
             alert("서버 연결 오류");
         }
@@ -108,7 +108,7 @@ window.addEventListener("load", function () {
 
     async function updateTodo(id, data) { // 서버의 todo 수정
         try {
-            const response = await fetch(API_URL + "/" + id, {
+            const response = await fetch(`${API_URL}/${id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
@@ -117,7 +117,7 @@ window.addEventListener("load", function () {
                 alert("수정 실패!");
                 return;
             }
-            loadTodos();
+            await loadTodos();
         } catch (error) {
             alert("서버 연결 오류");
         }
@@ -125,14 +125,14 @@ window.addEventListener("load", function () {
 
     async function deleteTodo(id) { // 서버의 todo 삭제
         try {
-            const response = await fetch(API_URL + "/" + id, {
+            const response = await fetch(`${API_URL}/${id}`, {
                 method: "DELETE"
             });
             if (!response.ok) {
                 alert("삭제 실패!");
                 return;
             }
-            loadTodos();
+            await loadTodos();
         } catch (error) {
             alert("서버 연결 오류");
         }
