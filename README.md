@@ -14,12 +14,12 @@ forEach()는 배열 안 사용자를 하나씩 꺼내 작업을 하기 위해서
 
 Deployment: GitHub URL, Vercel URL, MockAPI Endpoint URL (비밀 키·비밀번호는 기록하지 않음)
 GitHub URL: https://github.com/2026-2-OSS/assign09-c01-22400719
-Vercel URL:
-MockAPI Endpoint URL:
+Vercel URL: https://assign0922400719-f79ftk34y-juho2024-3649.vercel.app/
+MockAPI Endpoint URL: https://6ae34d7d933120ae20f8a038.mockapi.io/todo
 
 Service: 주제, Field, CRUD 기능
 - 주제: ToDo List
-- Field: 
+- Field: id, title, subject, task, deadline, priority
 - CRUD 기능: 
 -- C: create(post): 할 일들 서버에 추가하고 목록 갱신함
 -- R: read(get): 페이지 열때 서버에서 가져옴 그래서 조금 로딩까지 시간이 걸림
